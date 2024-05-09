@@ -1,0 +1,11 @@
+streamlit
+ipykernel
+dotenv-python
+spacy
+nltk
+transformers
+plotly
+matplotlib
+pandas
+scikit-learn
+VADER
