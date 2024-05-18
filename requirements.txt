@@ -13,3 +13,6 @@ gensim
 googletrans
 VADER
 numpy
+gensim
+rake_nltk
+deep-translator
