@@ -8,9 +8,17 @@ from nltk.tokenize import (word_tokenize,
                            TweetTokenizer, 
                            MWETokenizer)
 from nltk import download
+import re #Remove Punctuation
+from nltk.stem import PorterStemmer #Stemming
+from nltk.stem import WordNetLemmatizer #Lemmatization
 
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+
+
+
+
 
 st.title("Text Analysis")
 st.markdown("""
@@ -41,50 +49,51 @@ Tokenization is the process of breaking down text into smaller units called toke
 
 
 # text box
-text = st.text_area("Enter text to tokenize:", "Natural Language Processing is fascinating and very useful. Let's tokenize this text! Also, 3 + 5 = 8.")
+text = st.text_area("Enter text to tokenize:", "Natural Language Processing is fascinating and very useful. Let's tokenize this text! Also, 3 + 5 = 8.", key="tokenize_text_input")
 
-if text:
-    # Word tokenization
-    word_tokens = word_tokenize(text)
+if st.button('Submit', key='tokenize_submit'):
+  if text:
+      # Word tokenization
+      word_tokens = word_tokenize(text)
     
-    # Sentence tokenization
-    sentence_tokens = sent_tokenize(text)
+      # Sentence tokenization
+      sentence_tokens = sent_tokenize(text)
     
-    # Treebank word tokenization
-    treebank_word_tokenizer = TreebankWordTokenizer()
-    treebank_word_tokens = treebank_word_tokenizer.tokenize(text)
+      # Treebank word tokenization
+      treebank_word_tokenizer = TreebankWordTokenizer()
+      treebank_word_tokens = treebank_word_tokenizer.tokenize(text)
     
-    # Word punct tokenization
-    wordpunct_tokens = wordpunct_tokenize(text)
+      # Word punct tokenization
+      wordpunct_tokens = wordpunct_tokenize(text)
     
-    # Tweet tokenization
-    tweet_tokenizer = TweetTokenizer()
-    tweet_tokens = tweet_tokenizer.tokenize(text)
+      # Tweet tokenization
+      tweet_tokenizer = TweetTokenizer()
+      tweet_tokens = tweet_tokenizer.tokenize(text)
     
-    # Multi-word expression tokenization
-    mwe_tokenizer = MWETokenizer([('Natural', 'Language', 'Processing')])
-    mwe_tokens = mwe_tokenizer.tokenize(word_tokenize(text))
+      # Multi-word expression tokenization
+      mwe_tokenizer = MWETokenizer([('Natural', 'Language', 'Processing')])
+      mwe_tokens = mwe_tokenizer.tokenize(word_tokenize(text))
 
-    # Display the results
-    st.subheader("Tokenization Results")
+      # Display the results
+      st.subheader("Tokenization Results")
 
-    st.markdown("### Word Tokenization")
-    st.write(word_tokens)
+      st.markdown("### Word Tokenization")
+      st.write(word_tokens)
 
-    st.markdown("### Sentence Tokenization")
-    st.write(sentence_tokens)
+      st.markdown("### Sentence Tokenization")
+      st.write(sentence_tokens)
 
-    st.markdown("### Treebank Word Tokenization")
-    st.write(treebank_word_tokens)
+      st.markdown("### Treebank Word Tokenization")
+      st.write(treebank_word_tokens)
 
-    st.markdown("### WordPunct Tokenization")
-    st.write(wordpunct_tokens)
+      st.markdown("### WordPunct Tokenization")
+      st.write(wordpunct_tokens)
 
-    st.markdown("### Tweet Tokenization")
-    st.write(tweet_tokens)
+      st.markdown("### Tweet Tokenization")
+      st.write(tweet_tokens)
 
-    st.markdown("### Multi-word Expression Tokenization")
-    st.write(mwe_tokens)
+      st.markdown("### Multi-word Expression Tokenization")
+      st.write(mwe_tokens)
     
 # Explanation of tokenization
 st.markdown("""
@@ -123,21 +132,22 @@ To use POS tagging, simply enter a sentence in the text box below, and the syste
 
 
 # Input text box
-sentence = st.text_input("Enter a sentence:", "Natural Language Processing is very useful.")
+sentence = st.text_input("Enter a sentence:", "Natural Language Processing is very useful.", key="sentence_pos_input")
 
-if sentence:
-    # Tokenize the sentence
-    tokens = TreebankWordTokenizer().tokenize(sentence)
-    
-    # Perform POS tagging
-    pos_tags = nltk.pos_tag(tokens)
-    
-    # Convert POS tags to a pandas DataFrame
-    pos_df = pd.DataFrame(pos_tags, columns=["Word", "POS Tag"])
-    
-    # Display the POS tags in a table format
-    st.subheader("POS Tags")
-    st.table(pos_df)
+if st.button('Submit', key='submit_button_pos'):
+    if sentence:
+        # Tokenize the sentence
+        tokens = TreebankWordTokenizer().tokenize(sentence)
+        
+        # Perform POS tagging on the tokens
+        pos_tags = nltk.pos_tag(tokens)
+        
+        # Convert POS tags to a pandas DataFrame
+        pos_df = pd.DataFrame(pos_tags, columns=["Word", "POS Tag"])
+        
+        # Display the POS tags in a table format
+        st.subheader("POS Tags")
+        st.table(pos_df)
 
 
 
@@ -226,3 +236,129 @@ Example: Using `[tag="NNS"]` finds all nouns in the plural, e.g., people, years 
 M. Marcus, B. Santorini and M.A. Marcinkiewicz (1993). Building a large annotated corpus of English: The Penn Treebank. In Computational Linguistics, volume 19, number 2, pp. 313–330.
 """)
 
+st.markdown("## Removal of Punctuation")
+st.subheader("",divider='rainbow')
+st.markdown("""
+### Removing punctuation helps to:
+
+1. Reduce the dimensionality of the vector space, making computations more efficient.
+2. Reduce noise, leading to more accurate similarity measures.
+3. Improve tokenization, ensuring accurate word frequency distributions.
+4. Ensure consistent data representation in models like Bag of Words.
+""")
+
+
+def remove_punctuation(text):
+    return re.sub(r'[^\w\s]', '', text)
+# Input text box
+sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_input")
+
+if st.button('Submit', key='punctuation_submit'):
+    if sentence:
+      # Display the original sentence
+      st.subheader("Original Sentence")
+      st.write(sentence)
+    
+      # Remove punctuation from the sentence
+      cleaned_sentence = remove_punctuation(sentence)
+    
+      # Display the cleaned sentence
+      st.subheader("Cleaned Sentence (Punctuation Removed)")
+      st.write(cleaned_sentence)
+
+
+
+
+st.markdown("## Lowercasing")
+st.subheader("",divider='rainbow')
+st.markdown("""
+### Lowercasing helps with:
+1. **Uniformity**: Where the words with different cases "Earth" and "earth" are treated as identical, which results in reducing vocabulary size.
+2. **Dimensionality Reduction**: Reducing the numbers of unique tokens which is a must to ensure a smaller vector space.
+3. **Model Performance**: Simplifies the features for machine learning models, which leads to better training and evaluation.     
+""")
+
+
+
+def lowercase(text):
+    return text.lower()
+# Input text box
+sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_lower_input")
+
+if st.button('Submit', key='lowercase_submit'):
+    if sentence:
+      # Display the original sentence
+      st.subheader("Original Sentence")
+      st.write(sentence)
+    
+      # Remove punctuation from the sentence
+      lowercasing_sentence = lowercase(sentence)
+    
+      # Display the cleaned sentence
+      st.subheader("Cleaned Sentence (Lowercasing)")
+      st.write(lowercasing_sentence)
+
+
+
+st.markdown("## Stemming")
+st.subheader("",divider='rainbow')
+st.markdown("""
+### Stemming helps with:
+1. **Uniformity**: Where the words with different cases "Earth" and "earth" are treated as identical, which results in reducing vocabulary size.
+2. **Dimensionality Reduction**: Reducing the numbers of unique tokens which is a must to ensure a smaller vector space.
+3. **Model Performance**: Simplifies the features for machine learning models, which leads to better training and evaluation.     
+""")
+
+
+
+
+def stemming(words):
+    stemmer = PorterStemmer()
+    return [stemmer.stem(word) for word in words]
+# Input text box
+sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_stem_input")
+
+if st.button('Submit', key='stem_submit'):
+    if sentence:
+      # Display the original sentence
+      st.subheader("Original Sentence")
+      st.write(sentence)
+    
+      # Remove punctuation from the sentence
+      stemming_sentence = stemming(sentence)
+    
+      # Display the cleaned sentence
+      st.subheader("Cleaned Sentence (Stemming)")
+      st.write(stemming_sentence)
+
+
+
+st.markdown("## Lemmatization")
+st.subheader("",divider='rainbow')
+st.markdown("""
+### Lemmatization helps with:
+1. **Uniformity**: Where the words with different cases "Earth" and "earth" are treated as identical, which results in reducing vocabulary size.
+2. **Dimensionality Reduction**: Reducing the numbers of unique tokens which is a must to ensure a smaller vector space.
+3. **Model Performance**: Simplifies the features for machine learning models, which leads to better training and evaluation.     
+""")
+
+
+
+def lemmatization(words):
+    lemmatizer = WordNetLemmatizer()
+    return [lemmatizer.lemmatize(word) for word in words]
+# Input text box
+sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_lemm_input")
+
+if st.button('Submit', key='lemmatize_submit'):
+    if sentence:
+      # Display the original sentence
+      st.subheader("Original Sentence")
+      st.write(sentence)
+    
+      # Remove punctuation from the sentence
+      lemmatization_sentence = lemmatization(sentence)
+    
+      # Display the cleaned sentence
+      st.subheader("Cleaned Sentence (Lemmatization)")
+      st.write(lemmatization_sentence)
