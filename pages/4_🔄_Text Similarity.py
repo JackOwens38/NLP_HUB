@@ -3,13 +3,12 @@ import spacy
 from scipy.spatial.distance import euclidean, cosine
 from math import exp
 
-
 # Load Spacy model
 try:
     nlp = spacy.load("en_core_web_md")
 except OSError:
     st.error("Spacy model 'en_core_web_md' not found. Please ensure the model is downloaded.")
-
+    nlp = None
 
 # Jaccard similarity function
 def jaccard_similarity(x, y):
@@ -39,71 +38,74 @@ metric = st.selectbox("Choose a similarity metric:", ["Jaccard Similarity", "Euc
 # Submit button
 if st.button('Calculate Similarity'):
     if sentence1 and sentence2:
-        st.subheader(f"Similarity Calculation using {metric}")
-        
-        if metric == "Jaccard Similarity":
-            # Calculate Jaccard similarity
-            tokens1 = sentence1.lower().split()
-            tokens2 = sentence2.lower().split()
-            similarity = jaccard_similarity(tokens1, tokens2)
-            st.write(f"Jaccard Similarity: {similarity:.4f}")
+        if nlp is None:
+            st.error("SpaCy model is not available. Please check the installation.")
+        else:
+            st.subheader(f"Similarity Calculation using {metric}")
             
-            # Mathematical explanation
-            st.subheader("Mathematical Explanation")
-            st.markdown("""
-            ### Jaccard Similarity
-            The Jaccard similarity coefficient is defined as the size of the intersection divided by the size of the union of two sets:
-            """)
-            st.latex(r'''
-            J(A, B) = \frac{|A \cap B|}{|A \cup B|}
-            ''')
-            st.markdown("""
-            Where \(A\) and \(B\) are sets of words from the two sentences.
-            """)
+            if metric == "Jaccard Similarity":
+                # Calculate Jaccard similarity
+                tokens1 = sentence1.lower().split()
+                tokens2 = sentence2.lower().split()
+                similarity = jaccard_similarity(tokens1, tokens2)
+                st.write(f"Jaccard Similarity: {similarity:.4f}")
+                
+                # Mathematical explanation
+                st.subheader("Mathematical Explanation")
+                st.markdown("""
+                ### Jaccard Similarity
+                The Jaccard similarity coefficient is defined as the size of the intersection divided by the size of the union of two sets:
+                """)
+                st.latex(r'''
+                J(A, B) = \frac{|A \cap B|}{|A \cup B|}
+                ''')
+                st.markdown("""
+                Where \(A\) and \(B\) are sets of words from the two sentences.
+                """)
 
-        elif metric == "Euclidean Distance-based Similarity":
-            # Calculate Euclidean distance-based similarity
-            embedding1 = nlp(sentence1).vector
-            embedding2 = nlp(sentence2).vector
-            distance = euclidean(embedding1, embedding2)
-            similarity = distance_to_similarity(distance)
-            st.write(f"Euclidean Distance-based Similarity: {similarity:.4f}")
-            
-            # Mathematical explanation
-            st.subheader("Mathematical Explanation")
-            st.markdown("""
-            ### Euclidean Distance-based Similarity
-            The Euclidean distance between two points in space is given by:
-            """)
-            st.latex(r'''
-            d(x, y) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}
-            ''')
-            st.markdown("""
-            We convert this distance to a similarity score using the exponential function:
-            """)
-            st.latex(r'''
-            S = \frac{1}{e^d}
-            ''')
+            elif metric == "Euclidean Distance-based Similarity":
+                # Calculate Euclidean distance-based similarity
+                embedding1 = nlp(sentence1).vector
+                embedding2 = nlp(sentence2).vector
+                distance = euclidean(embedding1, embedding2)
+                similarity = distance_to_similarity(distance)
+                st.write(f"Euclidean Distance-based Similarity: {similarity:.4f}")
+                
+                # Mathematical explanation
+                st.subheader("Mathematical Explanation")
+                st.markdown("""
+                ### Euclidean Distance-based Similarity
+                The Euclidean distance between two points in space is given by:
+                """)
+                st.latex(r'''
+                d(x, y) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}
+                ''')
+                st.markdown("""
+                We convert this distance to a similarity score using the exponential function:
+                """)
+                st.latex(r'''
+                S = \frac{1}{e^d}
+                ''')
 
-        elif metric == "Cosine Similarity":
-            # Calculate Cosine similarity
-            embedding1 = nlp(sentence1).vector
-            embedding2 = nlp(sentence2).vector
-            cosine_sim = 1 - cosine(embedding1, embedding2)
-            st.write(f"Cosine Similarity: {cosine_sim:.4f}")
-            
-            # Mathematical explanation
-            st.subheader("Mathematical Explanation")
-            st.markdown("""
-            ### Cosine Similarity
-            The Cosine similarity between two vectors is given by the dot product divided by the product of the magnitudes of the vectors:
-            """)
-            st.latex(r'''
-            \cos(\theta) = \frac{A \cdot B}{\|A\| \|B\|}
-            ''')
-            st.markdown("""
-            Where \(A\) and \(B\) are the vector representations of the sentences.
-            """)
+            elif metric == "Cosine Similarity":
+                # Calculate Cosine similarity
+                embedding1 = nlp(sentence1).vector
+                embedding2 = nlp(sentence2).vector
+                cosine_sim = 1 - cosine(embedding1, embedding2)
+                st.write(f"Cosine Similarity: {cosine_sim:.4f}")
+                
+                # Mathematical explanation
+                st.subheader("Mathematical Explanation")
+                st.markdown("""
+                ### Cosine Similarity
+                The Cosine similarity between two vectors is given by the dot product divided by the product of the magnitudes of the vectors:
+                """)
+                st.latex(r'''
+                \cos(\theta) = \frac{A \cdot B}{\|A\| \|B\|}
+                ''')
+                st.markdown("""
+                Where \(A\) and \(B\) are the vector representations of the sentences.
+                """)
 
 st.markdown("""
 ### Summary

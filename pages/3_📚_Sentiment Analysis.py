@@ -10,8 +10,6 @@ st.markdown("""
 
 This page allows you to input text and view the predicted sentiment using a pre-trained model from Hugging Face's Transformers library.
 """)
-if not torch.cuda.is_available():
-    st.error("PyTorch is not installed. Please ensure PyTorch is installed correctly.")
 
 # Load the model and tokenizer from the local directory
 model_dir = "models/distilbert-base-uncased-finetuned-sst-2-english"
