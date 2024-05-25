@@ -13,3 +13,4 @@ googletrans
 vaderSentiment
 wordcloud
 pytextrank
+rake_nltk
