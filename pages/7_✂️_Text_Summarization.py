@@ -4,12 +4,8 @@ import pytextrank
 import time
 
 # Load Spacy model and add the TextRank pipeline component
-try:
-    nlp = spacy.load("en_core_web_lg")
-    nlp.add_pipe("textrank")
-except OSError:
-    st.error("Spacy model 'en_core_web_lg' not found. Please ensure the model is downloaded.")
-    nlp = None
+nlp = spacy.load("en_core_web_lg")
+nlp.add_pipe("textrank")
 
 st.title("Text Summarization with SpaCy and pyTextRank")
 st.markdown("""
@@ -49,21 +45,20 @@ limit_sentences = st.slider("Limit sentences:", min_value=1, max_value=10, value
 
 # Submit button
 if st.button('Summarize Text'):
-    if nlp is None:
-        st.error("SpaCy model is not available. Please check the installation.")
-    else:
-        if text:
-            # Process the text with SpaCy and pyTextRank
-            doc = nlp(text)
-            summary = "\n".join([str(sent) for sent in doc._.textrank.summary(limit_phrases=limit_phrases, limit_sentences=limit_sentences)])
+    with st.spinner("Summarizing"):
+        time.sleep(3)
+    if text:
+        # Process the text with SpaCy and pyTextRank
+        doc = nlp(text)
+        summary = "\n".join([str(sent) for sent in doc._.textrank.summary(limit_phrases=limit_phrases, limit_sentences=limit_sentences)])
 
-            st.subheader("Original Text")
-            st.write(text)
-            st.write(f"Original Document Size: {len(text)} characters")
+        st.subheader("Original Text")
+        st.write(text)
+        st.write(f"Original Document Size: {len(text)} characters")
 
-            st.subheader("Summarized Text")
-            st.write(summary)
-            st.write(f"Summary Length: {len(summary)} characters")
+        st.subheader("Summarized Text")
+        st.write(summary)
+        st.write(f"Summary Length: {len(summary)} characters")
 
 # Add the mathematical explanation
 st.markdown("""

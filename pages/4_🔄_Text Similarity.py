@@ -1,35 +1,7 @@
 import streamlit as st
-import subprocess
-import sys
-
-# Function to install packages
-def install_package(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# Install required packages
-try:
-    import spacy
-except ImportError:
-    install_package("spacy")
-    import spacy
-
-try:
-    from scipy.spatial.distance import euclidean, cosine
-except ImportError:
-    install_package("scipy")
-    from scipy.spatial.distance import euclidean, cosine
-
-# Download the SpaCy model if not already installed
-def download_spacy_model(model_name):
-    subprocess.run([sys.executable, "-m", "spacy", "download", model_name])
-
-# Ensure the SpaCy model is available
-try:
-    nlp = spacy.load("en_core_web_md")
-except OSError:
-    st.warning("SpaCy model 'en_core_web_md' not found. Downloading the model...")
-    download_spacy_model("en_core_web_md")
-    nlp = spacy.load("en_core_web_md")
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
+from math import exp
 
 # Jaccard similarity function
 def jaccard_similarity(x, y):
@@ -83,9 +55,9 @@ if st.button('Calculate Similarity'):
 
         elif metric == "Euclidean Distance-based Similarity":
             # Calculate Euclidean distance-based similarity
-            embedding1 = nlp(sentence1).vector
-            embedding2 = nlp(sentence2).vector
-            distance = euclidean(embedding1, embedding2)
+            vectorizer = TfidfVectorizer().fit_transform([sentence1, sentence2])
+            vectors = vectorizer.toarray()
+            distance = euclidean_distances(vectors[0].reshape(1, -1), vectors[1].reshape(1, -1))[0][0]
             similarity = distance_to_similarity(distance)
             st.write(f"Euclidean Distance-based Similarity: {similarity:.4f}")
             
@@ -107,9 +79,9 @@ if st.button('Calculate Similarity'):
 
         elif metric == "Cosine Similarity":
             # Calculate Cosine similarity
-            embedding1 = nlp(sentence1).vector
-            embedding2 = nlp(sentence2).vector
-            cosine_sim = 1 - cosine(embedding1, embedding2)
+            vectorizer = TfidfVectorizer().fit_transform([sentence1, sentence2])
+            vectors = vectorizer.toarray()
+            cosine_sim = cosine_similarity(vectors[0].reshape(1, -1), vectors[1].reshape(1, -1))[0][0]
             st.write(f"Cosine Similarity: {cosine_sim:.4f}")
             
             # Mathematical explanation
