@@ -8,7 +8,6 @@ plotly
 matplotlib
 pandas
 scikit-learn
-pickle
 gensim
 googletrans
 VADER
