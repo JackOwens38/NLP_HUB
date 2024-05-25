@@ -3,7 +3,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 import time
 st.title("Sentiment Analysis with Hugging Face Transformers")
 
-st.image('data\sentimentanalysishotelgeneric-2048x803-1.jpg', caption="https://www.expressanalytics.com/blog/social-media-sentiment-analysis/")
+st.image('data/sentimentanalysishotelgeneric-2048x803-1.jpg', caption="https://www.expressanalytics.com/blog/social-media-sentiment-analysis/")
 st.markdown("""
 ## Sentiment Analysis Page
 
