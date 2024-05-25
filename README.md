@@ -4,7 +4,7 @@ Welcome to NLP Hub! This interactive platform explores various Natural Language 
 
 ## Demo
 - [Link to the Demo](https://nlpplatform.streamlit.app/)
-- 
+
 ## Features
 - **Text Analysis**: Tokenization, POS tagging, punctuation removal, lowercasing, stemming, and lemmatization.
 - **Sentiment Analysis**: Using Hugging Face's pre-trained models to classify sentiment in text.
