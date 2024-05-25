@@ -19,16 +19,11 @@ except ImportError:
     install_package("scipy")
     from scipy.spatial.distance import euclidean, cosine
 
-try:
-    from math import exp
-except ImportError:
-    install_package("math")
-    from math import exp
-
-# Download the SpaCy model
+# Download the SpaCy model if not already installed
 def download_spacy_model(model_name):
     subprocess.run([sys.executable, "-m", "spacy", "download", model_name])
 
+# Ensure the SpaCy model is available
 try:
     nlp = spacy.load("en_core_web_md")
 except OSError:
