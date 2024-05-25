@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 import time
 
 
-# Download stopwords if not already downloaded
-nltk.download('stopwords')
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
 
-# Initialize Rake using NLTK stopwords
-rake = Rake()
 
 # Function to generate word cloud
 def generate_word_cloud(text):

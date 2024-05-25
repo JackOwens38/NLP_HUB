@@ -10,7 +10,6 @@ except OSError:
     st.error("Spacy model 'en_core_web_lg' not found. Please ensure the model is downloaded.")
 
 
-
 st.title("Text Summarization with SpaCy and pyTextRank")
 st.markdown("""
 ## Text Summarization Page

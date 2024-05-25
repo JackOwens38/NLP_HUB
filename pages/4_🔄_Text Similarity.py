@@ -10,6 +10,7 @@ try:
 except OSError:
     st.error("Spacy model 'en_core_web_md' not found. Please ensure the model is downloaded.")
 
+
 # Jaccard similarity function
 def jaccard_similarity(x, y):
     """ Returns the Jaccard similarity between two lists """

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Install necessary libraries
 pip install torch torchvision torchaudio
 

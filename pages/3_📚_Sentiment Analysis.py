@@ -14,7 +14,7 @@ if not torch.cuda.is_available():
     st.error("PyTorch is not installed. Please ensure PyTorch is installed correctly.")
 
 # Load the model and tokenizer from the local directory
-model_dir = "models\distilbert-base-uncased-finetuned-sst-2-english"
+model_dir = "models/distilbert-base-uncased-finetuned-sst-2-english"
 model = AutoModelForSequenceClassification.from_pretrained(model_dir)
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 
