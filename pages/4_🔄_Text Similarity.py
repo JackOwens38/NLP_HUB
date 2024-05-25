@@ -49,9 +49,11 @@ if st.button('Calculate Similarity'):
             st.markdown("""
             ### Jaccard Similarity
             The Jaccard similarity coefficient is defined as the size of the intersection divided by the size of the union of two sets:
-            \[
-            J(A, B) = \\frac{|A \cap B|}{|A \cup B|}
-            \]
+            """)
+            st.latex(r'''
+            J(A, B) = \frac{|A \cap B|}{|A \cup B|}
+            ''')
+            st.markdown("""
             Where \(A\) and \(B\) are sets of words from the two sentences.
             """)
 
@@ -68,14 +70,16 @@ if st.button('Calculate Similarity'):
             st.markdown("""
             ### Euclidean Distance-based Similarity
             The Euclidean distance between two points in space is given by:
-            \[
-            d(x, y) = \\sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}
-            \]
-            We convert this distance to a similarity score using the exponential function:
-            \[
-            S = \\frac{1}{e^d}
-            \]
             """)
+            st.latex(r'''
+            d(x, y) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}
+            ''')
+            st.markdown("""
+            We convert this distance to a similarity score using the exponential function:
+            """)
+            st.latex(r'''
+            S = \frac{1}{e^d}
+            ''')
 
         elif metric == "Cosine Similarity":
             # Calculate Cosine similarity
@@ -89,9 +93,11 @@ if st.button('Calculate Similarity'):
             st.markdown("""
             ### Cosine Similarity
             The Cosine similarity between two vectors is given by the dot product divided by the product of the magnitudes of the vectors:
-            \[
-            \cos(\theta) = \\frac{A \cdot B}{\|A\| \|B\|}
-            \]
+            """)
+            st.latex(r'''
+            \cos(\theta) = \frac{A \cdot B}{\|A\| \|B\|}
+            ''')
+            st.markdown("""
             Where \(A\) and \(B\) are the vector representations of the sentences.
             """)
 

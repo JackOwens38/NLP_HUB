@@ -1,6 +1,6 @@
 import streamlit as st
 from deep_translator import GoogleTranslator
-
+import time
 st.title("Language Translation with Google Translator")
 st.markdown("""
 ## Language Translation Page
@@ -19,6 +19,9 @@ target_lang = st.selectbox("Select the target language:", ['ar', 'en', 'fr', 'de
 
 # Submit button
 if st.button('Translate'):
+    with st.spinner('🌐...'):
+        time.sleep(3)
+
     if text:
         # Translate the text using GoogleTranslator
         translated = GoogleTranslator(source=source_lang, target=target_lang).translate(text)

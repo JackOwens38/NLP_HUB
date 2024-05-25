@@ -2,7 +2,7 @@ import streamlit as st
 from rake_nltk import Rake
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
-
+import time
 
 # Function to generate word cloud
 def generate_word_cloud(text):
@@ -25,19 +25,21 @@ text = st.text_area("Enter text for keyword extraction and word cloud generation
 # Submit button
 if st.button('Extract Keywords and Generate Word Cloud'):
     if text:
-        # Extract keywords using RAKE
-        rake = Rake()
-        rake.extract_keywords_from_text(text)
-        keywords = rake.get_ranked_phrases_with_scores()
+        with st.spinner('Extracting...'):
+            time.sleep(3)
+            # Extract keywords using RAKE
+            rake = Rake()
+            rake.extract_keywords_from_text(text)
+            keywords = rake.get_ranked_phrases_with_scores()
 
-        st.subheader("Extracted Keywords and Scores")
-        for score, phrase in keywords:
-            st.write(f"{score}: {phrase}")
+            st.subheader("Extracted Keywords and Scores")
+            for score, phrase in keywords:
+                st.write(f"{score}: {phrase}")
 
-        st.subheader("Word Cloud")
-        # Generate and display the word cloud
-        fig = generate_word_cloud(text)
-        st.pyplot(fig)
+            st.subheader("Word Cloud")
+            # Generate and display the word cloud
+            fig = generate_word_cloud(text)
+            st.pyplot(fig)
 
 # Add the mathematical explanation
 st.markdown("""
@@ -51,12 +53,17 @@ RAKE (Rapid Automatic Keyword Extraction) is a keyword extraction algorithm that
 4. **Phrase Scores**: Candidate keywords are scored by summing the scores of their constituent words.
 
 The score of a word \( w \) is calculated as:
-\[
+""")
+st.latex(r'''
 \text{Score}(w) = \text{Frequency}(w) + \text{Degree}(w)
-\]
-Where:
-- \(\text{Frequency}(w)\) is the number of occurrences of the word.
-- \(\text{Degree}(w)\) is the sum of the co-occurrences of the word with other words.
-
+''')
+st.latex(r'''
+\text{Where:}
+\begin{align*}
+\text{Frequency}(w) & \text{ is the number of occurrences of the word.} \\
+\text{Degree}(w) & \text{ is the sum of the co-occurrences of the word with other words.}
+\end{align*}
+''')
+st.markdown("""
 The score of a phrase \( P \) is the sum of the scores of the words in the phrase.
 """)

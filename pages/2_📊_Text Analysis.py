@@ -11,6 +11,7 @@ from nltk import download
 import re #Remove Punctuation
 from nltk.stem import PorterStemmer #Stemming
 from nltk.stem import WordNetLemmatizer #Lemmatization
+import time
 
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
@@ -52,6 +53,8 @@ Tokenization is the process of breaking down text into smaller units called toke
 text = st.text_area("Enter text to tokenize:", "Natural Language Processing is fascinating and very useful. Let's tokenize this text! Also, 3 + 5 = 8.", key="tokenize_text_input")
 
 if st.button('Submit', key='tokenize_submit'):
+  with st.spinner("🔍🔎🔍"):
+     time.sleep(3)
   if text:
       # Word tokenization
       word_tokens = word_tokenize(text)
@@ -135,6 +138,8 @@ To use POS tagging, simply enter a sentence in the text box below, and the syste
 sentence = st.text_input("Enter a sentence:", "Natural Language Processing is very useful.", key="sentence_pos_input")
 
 if st.button('Submit', key='submit_button_pos'):
+    with st.spinner("📜🔍📜"):
+       time.sleep(3)
     if sentence:
         # Tokenize the sentence
         tokens = TreebankWordTokenizer().tokenize(sentence)
@@ -254,6 +259,8 @@ def remove_punctuation(text):
 sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_input")
 
 if st.button('Submit', key='punctuation_submit'):
+    with st.spinner("❌🔡❌"):
+       time.sleep(3)
     if sentence:
       # Display the original sentence
       st.subheader("Original Sentence")
@@ -286,6 +293,8 @@ def lowercase(text):
 sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_lower_input")
 
 if st.button('Submit', key='lowercase_submit'):
+    with st.spinner("🔠🔡🔠"):
+       time.sleep(3)
     if sentence:
       # Display the original sentence
       st.subheader("Original Sentence")
@@ -319,6 +328,8 @@ def stemming(words):
 sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_stem_input")
 
 if st.button('Submit', key='stem_submit'):
+    with st.spinner("🌱🔪🌱"):
+       time.sleep(3)
     if sentence:
       # Display the original sentence
       st.subheader("Original Sentence")
@@ -351,6 +362,8 @@ def lemmatization(words):
 sentence = st.text_input("Enter a sentence:", "Dr. Emily Wong, Ph.D., exclaimed, 'OMG! Despite reaching 7.8 billion in 2021, global population metrics, like those in Section 123(i)(3)(A)(ii), remain baffling,' and then she added in a mix of French and English, 'C’est incroyable, no? Check my blog at www.emilywong-science.com or email me at wong@scienceworld.com for the full story on Mycobacterium tuberculosis complex (MTBC) research, which is, you know, the state-of-the-art stuff—I've literally termed it the Occam’s razor of epidemiology.", key="sentence_lemm_input")
 
 if st.button('Submit', key='lemmatize_submit'):
+    with st.spinner("📖🔄📖"):
+       time.sleep(3)
     if sentence:
       # Display the original sentence
       st.subheader("Original Sentence")

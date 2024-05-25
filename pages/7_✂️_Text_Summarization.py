@@ -1,10 +1,13 @@
 import streamlit as st
 import spacy
 import pytextrank
-
+import time
 # Load Spacy model and add the TextRank pipeline component
 nlp = spacy.load("en_core_web_lg")
 nlp.add_pipe("textrank")
+
+
+
 
 st.title("Text Summarization with SpaCy and pyTextRank")
 st.markdown("""
@@ -44,6 +47,7 @@ limit_sentences = st.slider("Limit sentences:", min_value=1, max_value=10, value
 
 # Submit button
 if st.button('Summarize Text'):
+
     if text:
         # Process the text with SpaCy and pyTextRank
         doc = nlp(text)
@@ -66,14 +70,18 @@ TextRank is an unsupervised text summarization technique based on the PageRank a
 1. **Graph Construction**: Sentences or phrases in the text are represented as nodes in a graph.
 2. **Edge Weights**: An edge is added between two nodes if they are similar, with the weight of the edge reflecting the degree of similarity.
 3. **Scoring**: Each node is scored based on its connections using the PageRank algorithm:
-   \[
-   PR(V_i) = (1 - d) + d \sum_{V_j \in In(V_i)} \frac{PR(V_j)}{L(V_j)}
-   \]
+""")
+
+st.latex(r'''
+PR(V_i) = (1 - d) + d \sum_{V_j \in In(V_i)} \frac{PR(V_j)}{L(V_j)}
+''')
+
+st.markdown("""
    Where:
-   - \( PR(V_i) \) is the PageRank score of node \( V_i \).
-   - \( d \) is a damping factor (usually set to 0.85).
-   - \( In(V_i) \) is the set of nodes that link to \( V_i \).
-   - \( L(V_j) \) is the number of outbound links from node \( V_j \).
+   - $ PR(V_i) $ is the PageRank score of node $ V_i $.
+   - $ d $ is a damping factor (usually set to 0.85).
+   - $ In(V_i) $ is the set of nodes that link to $ V_i $.
+   - $ L(V_j) $ is the number of outbound links from node $ V_j $.
 
 4. **Selection**: The top-ranked nodes (sentences or phrases) are selected to form the summary.
 

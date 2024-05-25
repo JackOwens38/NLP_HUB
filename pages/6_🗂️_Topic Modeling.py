@@ -92,7 +92,15 @@ LDA is a generative probabilistic model for collections of discrete data such as
 LSA is a technique that uses singular value decomposition (SVD) to reduce the dimensionality of a term-document matrix. It captures the underlying structure in the data by identifying patterns in the relationships between terms and documents.
 
 - **Term-Document Matrix**: A matrix representation of the corpus where each row represents a document and each column represents a term.
-- **Singular Value Decomposition (SVD)**: SVD factorizes the term-document matrix into three matrices: \( U \), \( \Sigma \), and \( V^T \). The columns of \( U \) represent topics, and the rows of \( V^T \) represent terms.
+- **Singular Value Decomposition (SVD)**: SVD factorizes the term-document matrix into three matrices:
+""")
+
+st.latex(r'''
+X = U \Sigma V^T
+''')
+
+st.markdown("""
+   The columns of \( U \) represent topics, and the rows of \( V^T \) represent terms.
 - **Reduced Dimensionality**: By keeping only the top \( k \) singular values, we reduce the dimensionality of the matrix while preserving the most important information.
 
 Both LDA and LSA are powerful tools for discovering hidden topics in text data and understanding the structure of large corpora.
