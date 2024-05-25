@@ -16,3 +16,4 @@ wordcloud
 pytextrank
 rake_nltk
 deep_translator
+sumy

@@ -1,11 +1,13 @@
 import streamlit as st
-from gensim.summarization import summarize
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer
 
-st.title("Text Summarization with Gensim")
+st.title("Text Summarization with Sumy")
 st.markdown("""
 ## Text Summarization Page
 
-This page allows you to input text and generate a summary using the Gensim library.
+This page allows you to input text and generate a summary using the Sumy library.
 """)
 
 # Sample text
@@ -33,35 +35,36 @@ whence the structured part."""
 # Text area for inputting the text
 text = st.text_area("Enter text to summarize:", sample_text, height=300)
 
-# Slider for summary ratio
-ratio = st.slider("Summary ratio (fraction of original text):", min_value=0.1, max_value=0.9, value=0.2, step=0.1)
+# Parameters for the summary
+num_sentences = st.slider("Number of sentences in summary:", min_value=1, max_value=10, value=2)
 
 # Submit button
 if st.button('Summarize Text'):
-    with st.spinner("Summarizing..."):
-        try:
-            summary = summarize(text, ratio=ratio)
-            st.subheader("Original Text")
-            st.write(text)
-            st.write(f"Original Document Size: {len(text)} characters")
+    parser = PlaintextParser.from_string(text, Tokenizer("english"))
+    summarizer = LsaSummarizer()
+    summary = summarizer(parser.document, num_sentences)
 
-            st.subheader("Summarized Text")
-            st.write(summary)
-            st.write(f"Summary Length: {len(summary)} characters")
-        except ValueError as e:
-            st.error(f"Error in summarization: {e}")
+    summary_text = " ".join(str(sentence) for sentence in summary)
+
+    st.subheader("Original Text")
+    st.write(text)
+    st.write(f"Original Document Size: {len(text)} characters")
+
+    st.subheader("Summarized Text")
+    st.write(summary_text)
+    st.write(f"Summary Length: {len(summary_text)} characters")
 
 # Add the mathematical explanation
 st.markdown("""
-### Explanation of Summarization
+### Explanation of LSA Summarization
 
-Text summarization is the process of creating a short and coherent version of a longer document. The Gensim library uses a variation of the TextRank algorithm to perform summarization. Here’s a brief explanation of how it works:
+Latent Semantic Analysis (LSA) is a technique in natural language processing for analyzing relationships between a set of documents and the terms they contain. Here’s a brief explanation of how it works:
 
-1. **Sentence Tokenization**: The input text is split into sentences.
-2. **Graph Construction**: Sentences are represented as nodes in a graph.
-3. **Edge Weights**: An edge is added between two nodes if they share common words, with the weight of the edge reflecting the degree of similarity.
-4. **Ranking Sentences**: Sentences are ranked based on their connections using the PageRank algorithm.
+1. **Text Processing**: The text is tokenized and converted into a matrix of term frequencies.
+2. **Singular Value Decomposition (SVD)**: The term-document matrix is decomposed into singular values.
+3. **Topic Identification**: The topics are identified based on the decomposed matrix.
+4. **Sentence Scoring**: Sentences are scored based on how well they represent the identified topics.
 5. **Selection**: The top-ranked sentences are selected to form the summary.
 
-This approach leverages the structure of the text to identify the most important sentences, producing a coherent and concise summary.
+LSA leverages the relationships between terms and documents to identify the most important sentences, producing a coherent and concise summary.
 """)
