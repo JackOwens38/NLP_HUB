@@ -10,7 +10,6 @@ pandas
 scikit-learn
 gensim
 googletrans
-numpy
-gensim
-rake_nltk
-deep-translator
+vaderSentiment
+wordcloud
+pytextrank

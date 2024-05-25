@@ -6,4 +6,4 @@ st.subheader('Linkedin: https://www.linkedin.com/in/naif-ganadily/', divider='ra
 st.subheader('Email: ganadilynaif@gmail.com', divider='rainbow')
 
 
-st.image("data\Room 2 Day 32592.JPG", caption="Professional Photo at the Google Cloud Next 2024", width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
+st.image("data/Room 2 Day 32592.JPG", caption="Professional Photo at the Google Cloud Next 2024", width=None, use_column_width=None, clamp=False, channels="RGB", output_format="auto")
