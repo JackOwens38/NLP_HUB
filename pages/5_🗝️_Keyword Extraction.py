@@ -5,11 +5,8 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import time
 
-
-try:
-    nltk.data.find('corpora/stopwords')
-except LookupError:
-    nltk.download('stopwords')
+# Download the NLTK punkt tokenizer
+nltk.download('punkt')
 
 
 # Function to generate word cloud
