@@ -1,8 +1,16 @@
 import streamlit as st
+import nltk
 from rake_nltk import Rake
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import time
+
+
+# Download stopwords if not already downloaded
+nltk.download('stopwords')
+
+# Initialize Rake using NLTK stopwords
+rake = Rake()
 
 # Function to generate word cloud
 def generate_word_cloud(text):

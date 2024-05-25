@@ -1,6 +1,7 @@
 import streamlit as st
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 import time
+import torch
 st.title("Sentiment Analysis with Hugging Face Transformers")
 
 st.image('data/sentimentanalysishotelgeneric-2048x803-1.jpg', caption="https://www.expressanalytics.com/blog/social-media-sentiment-analysis/")
@@ -9,6 +10,8 @@ st.markdown("""
 
 This page allows you to input text and view the predicted sentiment using a pre-trained model from Hugging Face's Transformers library.
 """)
+if not torch.cuda.is_available():
+    st.error("PyTorch is not installed. Please ensure PyTorch is installed correctly.")
 
 # Load the model and tokenizer from the local directory
 model_dir = "models\distilbert-base-uncased-finetuned-sst-2-english"

@@ -3,9 +3,11 @@ import spacy
 import pytextrank
 import time
 # Load Spacy model and add the TextRank pipeline component
-nlp = spacy.load("en_core_web_lg")
-nlp.add_pipe("textrank")
-
+try:
+    nlp = spacy.load("en_core_web_lg")
+    nlp.add_pipe("textrank")
+except OSError:
+    st.error("Spacy model 'en_core_web_lg' not found. Please ensure the model is downloaded.")
 
 
 

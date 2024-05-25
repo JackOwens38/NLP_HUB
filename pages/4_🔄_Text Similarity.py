@@ -5,7 +5,10 @@ from math import exp
 
 
 # Load Spacy model
-nlp = spacy.load("en_core_web_md")
+try:
+    nlp = spacy.load("en_core_web_md")
+except OSError:
+    st.error("Spacy model 'en_core_web_md' not found. Please ensure the model is downloaded.")
 
 # Jaccard similarity function
 def jaccard_similarity(x, y):
