@@ -1,17 +1,11 @@
 import streamlit as st
-import spacy
-import pytextrank
-import time
+from gensim.summarization import summarize
 
-# Load Spacy model and add the TextRank pipeline component
-nlp = spacy.load("en_core_web_lg")
-nlp.add_pipe("textrank")
-
-st.title("Text Summarization with SpaCy and pyTextRank")
+st.title("Text Summarization with Gensim")
 st.markdown("""
 ## Text Summarization Page
 
-This page allows you to input text and generate a summary using the pyTextRank library with SpaCy.
+This page allows you to input text and generate a summary using the Gensim library.
 """)
 
 # Sample text
@@ -39,50 +33,35 @@ whence the structured part."""
 # Text area for inputting the text
 text = st.text_area("Enter text to summarize:", sample_text, height=300)
 
-# Parameters for the summary
-limit_phrases = st.slider("Limit phrases:", min_value=1, max_value=10, value=2)
-limit_sentences = st.slider("Limit sentences:", min_value=1, max_value=10, value=2)
+# Slider for summary ratio
+ratio = st.slider("Summary ratio (fraction of original text):", min_value=0.1, max_value=0.9, value=0.2, step=0.1)
 
 # Submit button
 if st.button('Summarize Text'):
-    with st.spinner("Summarizing"):
-        time.sleep(3)
-    if text:
-        # Process the text with SpaCy and pyTextRank
-        doc = nlp(text)
-        summary = "\n".join([str(sent) for sent in doc._.textrank.summary(limit_phrases=limit_phrases, limit_sentences=limit_sentences)])
+    with st.spinner("Summarizing..."):
+        try:
+            summary = summarize(text, ratio=ratio)
+            st.subheader("Original Text")
+            st.write(text)
+            st.write(f"Original Document Size: {len(text)} characters")
 
-        st.subheader("Original Text")
-        st.write(text)
-        st.write(f"Original Document Size: {len(text)} characters")
-
-        st.subheader("Summarized Text")
-        st.write(summary)
-        st.write(f"Summary Length: {len(summary)} characters")
+            st.subheader("Summarized Text")
+            st.write(summary)
+            st.write(f"Summary Length: {len(summary)} characters")
+        except ValueError as e:
+            st.error(f"Error in summarization: {e}")
 
 # Add the mathematical explanation
 st.markdown("""
-### Mathematical Explanation of TextRank
+### Explanation of Summarization
 
-TextRank is an unsupervised text summarization technique based on the PageRank algorithm used in web search engines. Here’s a brief explanation of how it works:
+Text summarization is the process of creating a short and coherent version of a longer document. The Gensim library uses a variation of the TextRank algorithm to perform summarization. Here’s a brief explanation of how it works:
 
-1. **Graph Construction**: Sentences or phrases in the text are represented as nodes in a graph.
-2. **Edge Weights**: An edge is added between two nodes if they are similar, with the weight of the edge reflecting the degree of similarity.
-3. **Scoring**: Each node is scored based on its connections using the PageRank algorithm:
-""")
+1. **Sentence Tokenization**: The input text is split into sentences.
+2. **Graph Construction**: Sentences are represented as nodes in a graph.
+3. **Edge Weights**: An edge is added between two nodes if they share common words, with the weight of the edge reflecting the degree of similarity.
+4. **Ranking Sentences**: Sentences are ranked based on their connections using the PageRank algorithm.
+5. **Selection**: The top-ranked sentences are selected to form the summary.
 
-st.latex(r'''
-PR(V_i) = (1 - d) + d \sum_{V_j \in In(V_i)} \frac{PR(V_j)}{L(V_j)}
-''')
-
-st.markdown("""
-   Where:
-   - $ PR(V_i) $ is the PageRank score of node $ V_i $.
-   - $ d $ is a damping factor (usually set to 0.85).
-   - $ In(V_i) $ is the set of nodes that link to $ V_i $.
-   - $ L(V_j) $ is the number of outbound links from node $ V_j $.
-
-4. **Selection**: The top-ranked nodes (sentences or phrases) are selected to form the summary.
-
-TextRank leverages the graph structure of the text to identify the most important sentences, producing a coherent and concise summary.
+This approach leverages the structure of the text to identify the most important sentences, producing a coherent and concise summary.
 """)
