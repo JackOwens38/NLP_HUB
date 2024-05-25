@@ -9,6 +9,7 @@ matplotlib
 pandas
 scikit-learn
 gensim
+torch
 googletrans
 vaderSentiment
 wordcloud
