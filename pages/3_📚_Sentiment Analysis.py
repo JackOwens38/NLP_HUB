@@ -11,7 +11,7 @@ This page allows you to input text and view the predicted sentiment using a pre-
 """)
 
 # Load the model and tokenizer from the local directory
-model_dir = "experiments\models\distilbert-base-uncased-finetuned-sst-2-english"
+model_dir = "models\distilbert-base-uncased-finetuned-sst-2-english"
 model = AutoModelForSequenceClassification.from_pretrained(model_dir)
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 
