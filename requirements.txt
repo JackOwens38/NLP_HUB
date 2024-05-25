@@ -10,8 +10,6 @@ pandas
 scikit-learn
 gensim
 googletrans
-VADER
-time
 numpy
 gensim
 rake_nltk
